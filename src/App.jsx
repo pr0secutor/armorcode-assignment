@@ -40,6 +40,11 @@ const App = () => {
     setReschedulingCampaign(null);
   };
 
+  const handleOpenRescheduleModal = (campaign) => {
+    setSelectedDate(null);
+    setReschedulingCampaign(campaign);
+  };
+
   return (
     <div className="app p-6 bg-gray-100 min-h-screen">
       <div className="flex justify-end mb-8">
@@ -115,7 +120,7 @@ const App = () => {
                     </button>
                     <button
                       className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-                      onClick={() => setReschedulingCampaign(campaign)}
+                      onClick={() => handleOpenRescheduleModal(campaign)}
                     >
                       {translations[language].reschedule}
                     </button>
