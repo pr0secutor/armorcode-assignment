@@ -5,6 +5,8 @@ import DatePicker from "react-datepicker";
 import Modal from "react-modal";
 import { Data } from "../src/data";
 import relativeTime from "dayjs/plugin/relativeTime";
+
+// importing translations object for each button and table text
 import translations from "./translations";
 
 dayjs.extend(relativeTime);
@@ -32,6 +34,7 @@ const App = () => {
     (c) => getCategory(c.createdOn) === selectedTab
   );
 
+  // using filter to 
   const handleReschedule = (campaign, date) => {
     const updatedCampaigns = campaigns.map((c) =>
       c === campaign ? { ...c, createdOn: date.getTime() } : c
@@ -40,6 +43,7 @@ const App = () => {
     setReschedulingCampaign(null);
   };
 
+  // logic for handeling rescheduling campagin
   const handleOpenRescheduleModal = (campaign) => {
     setSelectedDate(null);
     setReschedulingCampaign(campaign);
@@ -132,6 +136,7 @@ const App = () => {
         </div>
       </div>
 
+      {/* checking if there is data in the modalData to open the modal */}
       {modalData && (
         <Modal
           isOpen
@@ -161,6 +166,7 @@ const App = () => {
         </Modal>
       )}
 
+      {/* {/* checking if there is data in the reschedulingCampaign to open the modal */}
       {reschedulingCampaign && (
         <Modal
           isOpen
