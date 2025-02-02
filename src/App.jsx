@@ -80,7 +80,7 @@ const App = () => {
             <thead className="bg-gray-200">
               <tr>
                 <th className="p-4 font-medium text-gray-700">
-                  {translations[language].createdOn}
+                  {translations[language].date}
                 </th>
                 <th className="p-4 font-medium text-gray-700">
                   {translations[language].campaign}
@@ -172,24 +172,33 @@ const App = () => {
             <h2 className="text-2xl font-semibold mb-2">
               {translations[language].rescheduleCampaign}
             </h2>
-            <h2 className="text-2xl font-medium">{reschedulingCampaign.name}</h2>
+            <h2 className="text-2xl font-medium">
+              {reschedulingCampaign.name}
+            </h2>
           </div>
           <div className="mb-4">
             <DatePicker
               selected={selectedDate}
               onChange={(date) => {
                 setSelectedDate(date);
-                handleReschedule(reschedulingCampaign, date);
               }}
               className="w-full border border-gray-300 rounded px-3 py-2"
             />
           </div>
-          <button
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
-            onClick={() => setReschedulingCampaign(null)}
-          >
-            {translations[language].close}
-          </button>
+          <div className="flex gap-2">
+            <button
+              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
+              onClick={() => handleReschedule(reschedulingCampaign, selectedDate)}
+            >
+              {translations[language].confirm}
+            </button>
+            <button
+              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+              onClick={() => setReschedulingCampaign(null)}
+            >
+              {translations[language].close}
+            </button>
+          </div>
         </Modal>
       )}
     </div>
