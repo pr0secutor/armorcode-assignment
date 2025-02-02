@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import * as dayjs from "dayjs";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import Modal from "react-modal";
 import { Data } from "../src/data";
 import relativeTime from "dayjs/plugin/relativeTime";
+import translations from "./translations";
 
 dayjs.extend(relativeTime);
 
@@ -16,6 +17,8 @@ const App = () => {
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [reschedulingCampaign, setReschedulingCampaign] = useState(null);
+
+  const [language, setLanguage] = useState("en");
 
   const getCategory = (timestamp) => {
     const today = dayjs();
@@ -39,6 +42,17 @@ const App = () => {
 
   return (
     <div className="app p-6 bg-gray-100 min-h-screen">
+      <div className="flex justify-end mb-8">
+        <select
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+          className="border rounded px-4 py-2"
+        >
+          <option value="en">English</option>
+          <option value="hi">हिंदी</option>
+        </select>
+      </div>
+
       <div className="tabs flex mb-1 space-x-4">
         {["upcoming", "live", "past"].map((tab) => (
           <button
@@ -50,7 +64,7 @@ const App = () => {
             } hover:bg-blue-400 hover:text-white transition`}
             onClick={() => setSelectedTab(tab)}
           >
-            {tab.toUpperCase()}
+            {translations[language][tab]}
           </button>
         ))}
       </div>
@@ -60,10 +74,18 @@ const App = () => {
           <table className="w-full text-left">
             <thead className="bg-gray-200">
               <tr>
-                <th className="p-4 font-medium text-gray-700">Created On</th>
-                <th className="p-4 font-medium text-gray-700">Campaign</th>
-                <th className="p-4 font-medium text-gray-700">Region</th>
-                <th className="p-4 font-medium text-gray-700">Actions</th>
+                <th className="p-4 font-medium text-gray-700">
+                  {translations[language].createdOn}
+                </th>
+                <th className="p-4 font-medium text-gray-700">
+                  {translations[language].campaign}
+                </th>
+                <th className="p-4 font-medium text-gray-700">
+                  {translations[language].region}
+                </th>
+                <th className="p-4 font-medium text-gray-700">
+                  {translations[language].actions}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -89,13 +111,13 @@ const App = () => {
                       className="px-3 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500 transition"
                       onClick={() => setModalData(campaign)}
                     >
-                      More
+                      {translations[language].details}
                     </button>
                     <button
                       className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
                       onClick={() => setReschedulingCampaign(campaign)}
                     >
-                      Reschedule
+                      {translations[language].reschedule}
                     </button>
                   </td>
                 </tr>
@@ -109,19 +131,27 @@ const App = () => {
         <Modal
           isOpen
           onRequestClose={() => setModalData(null)}
-          className="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto mt-20"
+          className="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto"
           overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
         >
           <h2 className="text-2xl font-semibold mb-4">{modalData.name}</h2>
-          <p className="text-gray-700 mb-4">Price: {modalData.price}</p>
-          <p className="text-gray-700 mb-4">CSV: {modalData.csv}</p>
-          <p className="text-gray-700 mb-4">Report: {modalData.report}</p>
-          <p className="text-gray-700 mb-4">Image Url: {modalData.image_url}</p>
+          <p className="text-gray-700 mb-4">
+            {translations[language].price}: {modalData.price}
+          </p>
+          <p className="text-gray-700 mb-4">
+            {translations[language].csv}: {modalData.csv}
+          </p>
+          <p className="text-gray-700 mb-4">
+            {translations[language].report}: {modalData.report}
+          </p>
+          <p className="text-gray-700 mb-4">
+            {translations[language].imageUrl}: {modalData.image_url}
+          </p>
           <button
             className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
             onClick={() => setModalData(null)}
           >
-            Close
+            {translations[language].close}
           </button>
         </Modal>
       )}
@@ -130,12 +160,15 @@ const App = () => {
         <Modal
           isOpen
           onRequestClose={() => setReschedulingCampaign(null)}
-          className="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto mt-20"
+          className="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto"
           overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
         >
-          <h2 className="text-2xl font-semibold mb-4">
-            Reschedule {reschedulingCampaign.name}
-          </h2>
+          <div className="mb-4">
+            <h2 className="text-2xl font-semibold mb-2">
+              {translations[language].rescheduleCampaign}
+            </h2>
+            <h2 className="text-2xl font-medium">{reschedulingCampaign.name}</h2>
+          </div>
           <div className="mb-4">
             <DatePicker
               selected={selectedDate}
@@ -150,7 +183,7 @@ const App = () => {
             className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
             onClick={() => setReschedulingCampaign(null)}
           >
-            Close
+            {translations[language].close}
           </button>
         </Modal>
       )}
